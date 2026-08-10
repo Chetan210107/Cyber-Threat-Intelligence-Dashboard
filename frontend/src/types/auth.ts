@@ -12,6 +12,7 @@ export type AuthResponse = {
   message: string;
   data?: {
     user: AuthUser;
+    profile_completed: boolean;
     access_token: string;
     refresh_token: string;
     token_type: string;

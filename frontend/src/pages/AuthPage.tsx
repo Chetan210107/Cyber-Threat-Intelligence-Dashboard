@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { saveTokens } from "../lib/session";
 import { login, register } from "../services/auth";
-import { getMyProfile } from "../services/profile";
 
 type Mode = "login" | "register";
 
@@ -32,16 +31,12 @@ export default function AuthPage() {
     try {
       if (mode === "login") {
         const response = await login({ email, password });
+        const profileCompleted = Boolean(response.data?.profile_completed);
         saveTokens({
           access_token: response.data?.access_token ?? "",
           refresh_token: response.data?.refresh_token ?? "",
         });
-        try {
-          await getMyProfile();
-          navigate("/dashboard", { replace: true });
-        } catch {
-          navigate("/welcome", { replace: true });
-        }
+        navigate(profileCompleted ? "/dashboard" : "/welcome", { replace: true });
       } else {
         const response = await register({ email, password, full_name: fullName });
         saveTokens({

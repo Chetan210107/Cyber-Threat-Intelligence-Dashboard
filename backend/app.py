@@ -15,7 +15,6 @@ if str(PROJECT_ROOT) not in sys.path:
 from backend.config import DevelopmentConfig
 from backend.extensions import cors, db, jwt, migrate
 from backend.models.role import Role
-from backend.models.user_profile import UserProfile
 from backend.models.user import User
 from backend.security.passwords import hash_password
 from backend.routes.auth_routes import auth_namespace
@@ -37,7 +36,7 @@ def create_app(config_object: type[object] = DevelopmentConfig) -> Flask:
 
     with app.app_context():
         db.create_all()
-        for role_name in ("analyst", "manager", "admin"):
+        for role_name in ("analyst", "manager"):
             existing_role = db.session.execute(select(Role).where(Role.name == role_name)).scalar_one_or_none()
             if existing_role is None:
                 db.session.add(Role(name=role_name, description=f"Default {role_name} role", is_system=True))

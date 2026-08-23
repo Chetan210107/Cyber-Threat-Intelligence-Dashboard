@@ -89,6 +89,49 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## External API Configuration
+
+CTID is prepared to use external cybersecurity intelligence services for future threat-intelligence features. Credentials are loaded locally through environment variables and are not required for the current dashboard foundation. No external API requests are made by this milestone.
+
+### NVD
+
+**Purpose:** CVE and vulnerability intelligence for future vulnerability analysis and enrichment in CTID.
+
+- Request an API key from the [NVD API key request page](https://nvd.nist.gov/developers/request-an-api-key).
+- Add the key locally using the `NVD_API_KEY` environment variable.
+
+### VirusTotal
+
+**Purpose:** IP address, domain, URL, and file-hash reputation and intelligence for future indicator analysis in CTID.
+
+- Obtain an API key from the VirusTotal account/API section. See the [VirusTotal getting started documentation](https://docs.virustotal.com/reference/getting-started).
+- Add the key locally using the `VIRUSTOTAL_API_KEY` environment variable.
+
+### AbuseIPDB
+
+**Purpose:** IP reputation and abuse information for future network indicator analysis in CTID.
+
+- Obtain an API key from the [AbuseIPDB API account page](https://www.abuseipdb.com/account/api).
+- Add the key locally using the `ABUSEIPDB_API_KEY` environment variable.
+
+### Local Setup
+
+1. Copy `.env.example` to `.env`.
+2. Add the actual provider keys to `.env`.
+3. Keep `.env` private and store it only on your local machine.
+4. Never commit `.env`; it remains protected by `.gitignore`.
+5. `.env.example` is safe to commit because it contains placeholders only.
+
+Safe local format:
+
+```text
+NVD_API_KEY=your_nvd_api_key
+VIRUSTOTAL_API_KEY=your_virustotal_api_key
+ABUSEIPDB_API_KEY=your_abuseipdb_api_key
+```
+
+API keys are credentials. Never publish them on GitHub, place them in source code, include them in tests or documentation, or expose them in logs, errors, or responses. CTID reports missing credential names without displaying credential values.
+
 ### Frontend
 
 1. Open a second terminal.

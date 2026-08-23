@@ -7,6 +7,7 @@ import { dashboardNavigation } from "../../data/dashboardNavigation";
 const routeTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/profile": "Profile",
+  "/virustotal": "VirusTotal",
   "/threat-intelligence": "Threat Intelligence",
   "/ioc-search": "IOC Search",
   "/malware-intelligence": "Malware Intelligence",

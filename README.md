@@ -12,6 +12,7 @@ CTID is a dark-mode cyber threat intelligence dashboard built as an enterprise-s
 - Username availability checking
 - Dashboard shell with collapsible sidebar and top navigation
 - Responsive layout with placeholder pages for future security modules
+- VirusTotal lookups for IP addresses, domains, and file hashes
 
 ## Tech Stack
 
@@ -91,7 +92,7 @@ python app.py
 
 ## External API Configuration
 
-CTID is prepared to use external cybersecurity intelligence services for future threat-intelligence features. Credentials are loaded locally through environment variables and are not required for the current dashboard foundation. No external API requests are made by this milestone.
+CTID uses external cybersecurity intelligence services for indicator enrichment. The first active integration is VirusTotal, while NVD and AbuseIPDB remain configured for future modules. Credentials are loaded locally through environment variables.
 
 ### NVD
 
@@ -102,10 +103,11 @@ CTID is prepared to use external cybersecurity intelligence services for future 
 
 ### VirusTotal
 
-**Purpose:** IP address, domain, URL, and file-hash reputation and intelligence for future indicator analysis in CTID.
+**Purpose:** IP address, domain, and file-hash reputation and intelligence for indicator analysis in CTID.
 
 - Obtain an API key from the VirusTotal account/API section. See the [VirusTotal getting started documentation](https://docs.virustotal.com/reference/getting-started).
 - Add the key locally using the `VIRUSTOTAL_API_KEY` environment variable.
+- Current CTID support is limited to read-only IP, domain, and file-hash lookups.
 
 ### AbuseIPDB
 
@@ -130,7 +132,7 @@ VIRUSTOTAL_API_KEY=your_virustotal_api_key
 ABUSEIPDB_API_KEY=your_abuseipdb_api_key
 ```
 
-API keys are credentials. Never publish them on GitHub, place them in source code, include them in tests or documentation, or expose them in logs, errors, or responses. CTID reports missing credential names without displaying credential values.
+API keys are credentials. Never publish them on GitHub, place them in source code, include real keys in tests or documentation, or expose them in logs, errors, or responses. CTID reports missing credential names without displaying credential values.
 
 ### Frontend
 

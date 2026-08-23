@@ -6,6 +6,7 @@ export type DashboardNavItem = {
 
 export const dashboardNavigation: DashboardNavItem[] = [
   { label: "Dashboard", path: "/dashboard" },
+  { label: "VirusTotal", path: "/virustotal" },
   { label: "Threat Intelligence", path: "/threat-intelligence", comingSoon: true },
   { label: "IOC Search", path: "/ioc-search", comingSoon: true },
   { label: "Malware Intelligence", path: "/malware-intelligence", comingSoon: true },

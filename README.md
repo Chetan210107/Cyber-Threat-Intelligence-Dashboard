@@ -6,7 +6,7 @@ CTID is a dark-mode cyber threat intelligence dashboard built as an enterprise-s
 
 - Secure authentication with JWT access and refresh tokens
 - Registration and login flows
-- Logout and basic RBAC foundation
+- Logout and basic foundation
 - Onboarding flow after registration
 - User profile creation, viewing, and editing
 - Username availability checking

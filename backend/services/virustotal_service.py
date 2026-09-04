@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ipaddress
+import logging
 import re
 from typing import Any, Callable
 
@@ -8,9 +9,15 @@ import requests
 
 from backend.config import APISettings
 
+logger = logging.getLogger(__name__)
+
 
 class VirusTotalError(Exception):
     """Safe application error for VirusTotal lookup failures."""
+
+    def __init__(self, message: str, status_code: int = 400) -> None:
+        super().__init__(message)
+        self.status_code = status_code
 
 
 class VirusTotalService:
@@ -51,19 +58,23 @@ class VirusTotalService:
                 timeout=10,
             )
         except requests.RequestException as error:
-            raise VirusTotalError("VirusTotal service is unavailable.") from error
+            logger.warning("VirusTotal request failed: type=%s error=%s", indicator_type, type(error).__name__)
+            raise VirusTotalError("VirusTotal service is unavailable.", 503) from error
 
+        logger.info("VirusTotal response: type=%s status=%s", indicator_type, response.status_code)
         if response.status_code == 404:
-            raise VirusTotalError("Indicator was not found in VirusTotal.")
+            raise VirusTotalError("Indicator was not found in VirusTotal.", 404)
         if response.status_code in {401, 403}:
-            raise VirusTotalError("VirusTotal API authentication failed.")
+            raise VirusTotalError("VirusTotal API authentication failed.", response.status_code)
+        if response.status_code == 429:
+            raise VirusTotalError("VirusTotal rate limit exceeded. Try again later.", 429)
         if response.status_code >= 400:
-            raise VirusTotalError("VirusTotal returned an API error.")
+            raise VirusTotalError("VirusTotal returned an API error.", 502)
 
         try:
             payload = response.json()
         except ValueError as error:
-            raise VirusTotalError("VirusTotal returned an invalid response.") from error
+            raise VirusTotalError("VirusTotal returned an invalid response.", 502) from error
 
         return self._normalize(payload, indicator, indicator_type)
 

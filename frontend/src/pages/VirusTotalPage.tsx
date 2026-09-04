@@ -36,11 +36,23 @@ export default function VirusTotalPage() {
     try {
       setResult(await lookupVirusTotal(type, indicator.trim()));
     } catch (lookupError) {
-      const message = axios.isAxiosError(lookupError)
-        ? lookupError.response?.data?.message ?? "VirusTotal lookup failed."
-        : lookupError instanceof Error
-          ? lookupError.message
-          : "VirusTotal lookup failed.";
+      let message = "VirusTotal lookup failed.";
+      if (axios.isAxiosError(lookupError)) {
+        if (!lookupError.response) {
+          message = "Unable to connect to the CTID backend.";
+        } else {
+          const statusMessages: Record<number, string> = {
+            401: "VirusTotal API authentication failed.",
+            403: "VirusTotal API authentication failed.",
+            404: "Indicator was not found in VirusTotal.",
+            429: "VirusTotal rate limit exceeded. Try again later.",
+            503: "VirusTotal service is unavailable.",
+          };
+          message = lookupError.response.data?.message ?? statusMessages[lookupError.response.status] ?? message;
+        }
+      } else if (lookupError instanceof Error) {
+        message = lookupError.message;
+      }
       setError(message);
     } finally {
       setLoading(false);

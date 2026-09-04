@@ -22,4 +22,4 @@ class VirusTotalController:
         try:
             return api_response(True, "VirusTotal lookup completed.", lookup(indicator)), 200
         except VirusTotalError as error:
-            return api_response(False, str(error)), 400
+            return api_response(False, str(error)), error.status_code

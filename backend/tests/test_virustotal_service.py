@@ -86,6 +86,8 @@ def test_provider_errors_are_safely_mapped(status_code):
 
     assert "test-key" not in str(error.value)
     assert "VirusTotal" in str(error.value)
+    expected_status = 429 if status_code == 429 else status_code if status_code in {401, 403} else 502
+    assert error.value.status_code == expected_status
 
 
 def test_not_found_response_is_handled():
@@ -112,6 +114,6 @@ def test_network_failure_is_handled_without_internal_error():
 
 
 def test_virustotal_endpoint_requires_jwt(client):
-    response = client.get("/api/virustotal/ip/8.8.8.8")
+    response = client.get("/api/v1/virustotal/ip/8.8.8.8")
 
     assert response.status_code == 401

@@ -34,7 +34,7 @@ def create_app(config_object: type[object] = DevelopmentConfig) -> Flask:
     api = Api(app, version="1.0", title="CTID API", doc="/api/docs")
     api.add_namespace(auth_namespace, path="/api/v1/auth")
     api.add_namespace(profile_namespace, path="/api/v1/profile")
-    api.add_namespace(virustotal_namespace, path="/api/virustotal")
+    api.add_namespace(virustotal_namespace, path="/api/v1/virustotal")
 
     with app.app_context():
         db.create_all()
